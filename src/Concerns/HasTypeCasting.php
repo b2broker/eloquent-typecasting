@@ -80,18 +80,20 @@ trait HasTypeCasting
 
             return $this->{$method}($value);
         }
-
         // If an attribute is listed as a "date", we'll convert it from a DateTime
         // instance into a form proper for storage on the database tables using
         // the connection grammar's date format. We will auto set the values.
-        elseif ($value && $this->isDateAttribute($key)) {
+        if ($value && $this->isDateAttribute($key)) {
             $value = $this->fromDateTime($value);
         }
 
         if ($value !== null && $this->isJsonCastable($key)) {
             $value = $this->castAttributeAsJson($key, $value);
         } elseif ($this->hasCast($key)) {
-            $value = TypeCasting::resolve($this->getCasts()[$key])->fromAttribute($key, $value, $this);
+            $type = $this->getCasts()[$key];
+            if (\in_array($type, TypeCasting::all(), true)) {
+                $value = TypeCasting::resolve($type)->fromAttribute($key, $value, $this);
+            }
         }
 
         // If this attribute contains a JSON ->, we'll set the proper value in the

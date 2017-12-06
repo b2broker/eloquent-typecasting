@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Facade;
  * @package B2B\Eloquent\TypeCasting\Facades
  * @method static Contracts\TypeCastingInterface  resolve(string $name, ...$args)
  * @method static Factory extend(string $name, $class = null)
+ * @method static string[] all()
  */
 class TypeCasting extends Facade
 {
