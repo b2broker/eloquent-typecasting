@@ -1,0 +1,27 @@
+{
+    "name": "b2b/eloquent-typecasting",
+    "description": "Eloquent extended typecasting",
+    "authors": [
+        {
+            "name": "Dmytro Kulyk",
+            "email": "lnkvisitor.ts@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "illuminate/database": "^5.5",
+        "b2b/factory": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "B2B\\Eloquent\\TypeCasting\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "B2B\\Eloquent\\TypeCasting\\ServiceProvider"
+            ]
+        }
+    }
+}
