@@ -7,6 +7,7 @@ use B2B\Eloquent\TypeCasting\Facades\TypeCasting;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Str;
+use MyCLabs\Enum\Enum;
 
 /**
  * Trait HasTypeCasting
@@ -16,6 +17,38 @@ use Illuminate\Support\Str;
  */
 trait HasTypeCasting
 {
+    /**
+     * Get enums.
+     *
+     * @return array
+     */
+    public function getEnums(): array
+    {
+        return $this->enums ?? [];
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function hasEnum(string $key): bool
+    {
+        return \array_key_exists($key, $this->getEnums());
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return Enum
+     */
+    public function asEnum(string $key, $value): Enum
+    {
+        $class = $this->getEnums()[$key];
+        return new $class($value);
+    }
+
     /**
      * Cast an attribute to a native PHP type.
      *
@@ -28,6 +61,10 @@ trait HasTypeCasting
     {
         if ($value === null) {
             return $value;
+        }
+
+        if ($this->hasEnum($key)) {
+            return $this->asEnum($key, $value);
         }
 
         $type = $this->getCastType($key);
@@ -89,6 +126,8 @@ trait HasTypeCasting
 
         if ($value !== null && $this->isJsonCastable($key)) {
             $value = $this->castAttributeAsJson($key, $value);
+        } elseif ($this->hasEnum($key)) {
+            $value = $value instanceof Enum ? $value->getValue() : $value;
         } elseif ($this->hasCast($key)) {
             $type = $this->getCasts()[$key];
             if (\in_array($type, TypeCasting::all(), true)) {
