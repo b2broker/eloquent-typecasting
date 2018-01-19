@@ -46,7 +46,7 @@ trait HasTypeCasting
     public function asEnum(string $key, $value): Enum
     {
         $class = $this->getEnums()[$key];
-        return new $class($value);
+        return new $class(\ctype_digit($value) ? (int) $value : $value);
     }
 
     /**
