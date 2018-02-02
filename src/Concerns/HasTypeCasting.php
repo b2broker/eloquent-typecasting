@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace B2B\Eloquent\TypeCasting\Concerns;
 
 use B2B\Eloquent\TypeCasting\Facades\TypeCasting;
+use B2B\Enum\Enum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Str;
-use MyCLabs\Enum\Enum;
 
 /**
  * Trait HasTypeCasting
